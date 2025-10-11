@@ -148,7 +148,9 @@
       }
 
       .reset-button,
-      .diet-button {
+      .diet-button,
+      .export-button,
+      .import-button {
         color: white;
         border: none;
         padding: 15px 40px;
@@ -161,12 +163,14 @@
         display: inline-block;
       }
 
-      .reset-button {
+      .reset-button,
+      .export-button,
+      .import-button {
         background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         box-shadow: 0 5px 15px rgba(245, 87, 108, 0.3);
       }
 
-      .reset-button:hover {
+      .import-button:hover .export-button:hover .reset-button:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
       }
@@ -259,10 +263,26 @@
 
       <div class="buttons-container">
         <a href="DietPlan/y.htm" class="diet-button">🥗 النظام الغذائي</a>
+        <button class="export-button" onclick="exportData()">
+          📥 تصدير بياناتي
+        </button>
+        <button
+          class="import-button"
+          onclick="document.getElementById('fileInput').click()"
+        >
+          📤 استيراد بيانات
+        </button>
         <button class="reset-button" onclick="resetChallenge()">
           إعادة التحدي
         </button>
       </div>
+      <input
+        type="file"
+        id="fileInput"
+        accept=".json"
+        onchange="importData(event)"
+        style="opacity: 0"
+      />
     </div>
 
     <script>
@@ -455,6 +475,75 @@
           createDays();
           updateProgress();
         }
+      }
+
+      // تصدير البيانات
+      function exportData() {
+        const data = {
+          appName: "90 Days Gym Challenge",
+          exportDate: new Date().toLocaleString("ar-EG"),
+          timestamp: Date.now(),
+          challengeData: checkedDays,
+        };
+
+        const dataStr = JSON.stringify(data, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `gym-challenge-backup-${Date.now()}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        alert("✅ تم تصدير بياناتك بنجاح!\nالملف تم حفظه في مجلد التنزيلات");
+      }
+
+      // استيراد البيانات
+      function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const data = JSON.parse(e.target.result);
+
+            if (!data.challengeData) {
+              alert(
+                "❌ الملف غير صحيح! تأكد من اختيار ملف النسخة الاحتياطية الصحيح."
+              );
+              return;
+            }
+
+            if (Object.keys(checkedDays).length > 0) {
+              if (
+                !confirm(
+                  "⚠️ يوجد بيانات حالية. هل تريد استبدالها بالبيانات المستوردة؟"
+                )
+              ) {
+                return;
+              }
+            }
+
+            checkedDays = data.challengeData;
+            saveProgress();
+            createDays();
+            updateProgress();
+
+            alert(
+              `✅ تم استيراد البيانات بنجاح!\nتاريخ النسخة الاحتياطية: ${data.exportDate}`
+            );
+          } catch (error) {
+            alert("❌ خطأ في قراءة الملف! تأكد من أن الملف صحيح.");
+          }
+        };
+        reader.readAsText(file);
+
+        // إعادة تعيين input لتمكين اختيار نفس الملف مرة أخرى
+        event.target.value = "";
       }
 
       // تهيئة التطبيق
