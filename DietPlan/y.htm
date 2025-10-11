@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>النظام الغذائي اليومي</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        padding: 40px;
+        max-width: 1000px;
+        width: 100%;
+        margin: 0 auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        color: #667eea;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .header p {
+        color: #666;
+        font-size: 1.1em;
+      }
+
+      .diet-image {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        display: block;
+        transition: transform 0.3s ease;
+      }
+
+      .diet-image:hover {
+        transform: scale(1.02);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .stat-card h3 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+        opacity: 0.9;
+      }
+
+      .stat-card p {
+        font-size: 2em;
+        font-weight: 700;
+      }
+
+      .section {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .section h2 {
+        color: #667eea;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #667eea;
+      }
+
+      .section h3 {
+        color: #764ba2;
+        font-size: 1.4em;
+        margin: 25px 0 15px;
+      }
+
+      .section ul,
+      .section ol {
+        margin-right: 25px;
+      }
+
+      .section li {
+        margin-bottom: 12px;
+        line-height: 1.8;
+        font-size: 1.05em;
+        color: #444;
+      }
+
+      .highlight {
+        background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        font-size: 1.1em;
+      }
+
+      .important {
+        background-color: #fff3cd;
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-weight: 600;
+        color: #856404;
+      }
+
+      .link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .link:hover {
+        color: #764ba2;
+        text-decoration: underline;
+      }
+
+      .back-button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        display: block;
+        margin: 30px auto 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        text-decoration: none;
+        text-align: center;
+      }
+
+      .back-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .notes-section {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .notes-input-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .notes-input {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid #667eea;
+        border-radius: 15px;
+        font-size: 1em;
+        font-family: inherit;
+        transition: all 0.3s ease;
+      }
+
+      .notes-input:focus {
+        outline: none;
+        border-color: #764ba2;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .add-note-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 15px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+      }
+
+      .add-note-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .notes-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .note-item {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .note-item:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+
+      .note-content {
+        flex: 1;
+        color: #333;
+        line-height: 1.6;
+        word-break: break-word;
+      }
+
+      .note-content.editing {
+        padding: 10px;
+        border: 2px solid #667eea;
+        border-radius: 8px;
+        outline: none;
+      }
+
+      .note-date {
+        font-size: 0.85em;
+        color: #999;
+        margin-top: 5px;
+      }
+
+      .note-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .note-btn {
+        background: none;
+        border: none;
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .edit-btn {
+        color: #667eea;
+      }
+
+      .edit-btn:hover {
+        background: #e8ecff;
+      }
+
+      .delete-btn {
+        color: #f5576c;
+      }
+
+      .delete-btn:hover {
+        background: #ffe8ec;
+      }
+
+      .save-btn {
+        color: #38ef7d;
+      }
+
+      .save-btn:hover {
+        background: #e8fff3;
+      }
+
+      .empty-notes {
+        text-align: center;
+        color: #999;
+        padding: 40px;
+        font-size: 1.1em;
+      }
+
+      .sync-status {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        margin-right: 10px;
+      }
+
+      .sync-success {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .sync-local {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      .item-card {
+        background: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+
+      .item-card:hover {
+        transform: translateX(-5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+
+      .item-name {
+        font-weight: 600;
+        color: #333;
+      }
+
+      .item-calories {
+        color: #667eea;
+        font-weight: 700;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 20px;
+        }
+
+        .header h1 {
+          font-size: 1.8em;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .section {
+          padding: 20px;
+        }
+
+        .section h2 {
+          font-size: 1.5em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>
+          <span>🍽️</span>
+          النظام الغذائي لجسمي
+          <span>🍎</span>
+        </h1>
+        <p>خطة متكاملة لتحقيق أهدافك</p>
+      </div>
+
+      <img
+        src="y.jpg"
+        alt="صورة توضيحية للنظام الغذائي اليومي"
+        class="diet-image"
+      />
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>🔥 السعرات الحرارية</h3>
+          <p>3000 سعرة</p>
+        </div>
+        <div class="stat-card">
+          <h3>💪 البروتين</h3>
+          <p>120 جرام</p>
+        </div>
+        <div class="stat-card">
+          <h3>💊 الفيتامينات</h3>
+          <p>فيتامين د، Zinc</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>📊 1- السعرات الحرارية</h2>
+
+        <h3>📋 مقترحات الغذائي اليومي:</h3>
+        <ol style="list-style: disc">
+          <li>
+            وجبة فطار (مثلا 2 ساندوتش جبنة) |
+            <span class="highlight">600 سعر</span>
+          </li>
+          <li>وجبة غدا | <span class="highlight">1000 سعر</span></li>
+          <li>
+            طبق شكشوكه 2 بيضه 2 طماطم رغيفان عيش بلدي |
+            <span class="highlight">800 سعر</span>
+          </li>
+          <li>
+            مشروب الضخامه: 2 معلقة شوفان و2 كوب لبن كامل الدسم |
+            <span class="highlight">450 سعر</span>
+            <span class="highlight">21 ج بروتين</span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="section">
+        <h2>💊 مكملات النظام الغذائي</h2>
+        <ol>
+          <li>
+            حبايه فيتامين د3 جرعة 1000 يومياً (<span class="important"
+              >مهم فشخ</span
+            >) ☀️
+          </li>
+          <li>حباية زنك ⚡</li>
+          <li>
+            كرياتين في ايام التمرين (ان امكن يعني)
+            <a
+              href="https://www.amazon.eg/-/en/gp/product/B0DXV8YW8L/ref=ox_sc_act_title_1?smid=A1ZVRGNO5AYLOV&psc=1"
+              target="_blank"
+              class="link"
+              >افضل مصدر شراء</a
+            >
+            🔥
+          </li>
+          <li>المشروب الطرش شوفان بالحليب (ان امكن يعني) 🥤</li>
+        </ol>
+      </div>
+
+      <div class="notes-section">
+        <h2>📝 ملاحظاتي الشخصية</h2>
+        <span class="sync-status sync-local">💾 محفوظ محلياً</span>
+
+        <div class="notes-input-container">
+          <input
+            type="text"
+            id="noteInput"
+            class="notes-input"
+            placeholder="اكتب ملاحظة جديدة هنا..."
+            onkeypress="if(event.key === 'Enter') addNote()"
+          />
+          <button class="add-note-btn" onclick="addNote()">إضافة ➕</button>
+        </div>
+
+        <div class="notes-list" id="notesList">
+          <div class="empty-notes">لا توجد ملاحظات حتى الآن 📋</div>
+        </div>
+      </div>
+
+      <a href="../index.html" class="back-button">🏋️ العودة إلى التحدي</a>
+    </div>
+
+    <script>
+      let notes = [];
+      const STORAGE_KEY = "dietPlanNotes";
+
+      // تحميل الملاحظات عند فتح الصفحة
+      function loadNotes() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          notes = JSON.parse(saved);
+          renderNotes();
+        }
+      }
+
+      // حفظ الملاحظات
+      function saveNotes() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+        // هنا ممكن تضيف كود لإرسال الملاحظات للسيرفر
+        // syncToServer(notes);
+      }
+
+      // إضافة ملاحظة جديدة
+      function addNote() {
+        const input = document.getElementById("noteInput");
+        const text = input.value.trim();
+
+        if (text === "") {
+          alert("من فضلك اكتب ملاحظة أولاً!");
+          return;
+        }
+
+        const note = {
+          id: Date.now(),
+          text: text,
+          date: new Date().toLocaleString("ar-EG"),
+          timestamp: Date.now(),
+        };
+
+        notes.unshift(note);
+        saveNotes();
+        renderNotes();
+        input.value = "";
+        input.focus();
+      }
+
+      // عرض الملاحظات
+      function renderNotes() {
+        const container = document.getElementById("notesList");
+
+        if (notes.length === 0) {
+          container.innerHTML =
+            '<div class="empty-notes">لا توجد ملاحظات حتى الآن 📋</div>';
+          return;
+        }
+
+        container.innerHTML = notes
+          .map(
+            (note) => `
+                <div class="note-item" id="note-${note.id}">
+                    <div style="flex: 1;">
+                        <div class="note-content" id="content-${note.id}">${note.text}</div>
+                        <div class="note-date">${note.date}</div>
+                    </div>
+                    <div class="note-actions">
+                        <button class="note-btn edit-btn" onclick="editNote(${note.id})" title="تعديل">✏️</button>
+                        <button class="note-btn delete-btn" onclick="deleteNote(${note.id})" title="حذف">🗑️</button>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      // تعديل ملاحظة
+      function editNote(id) {
+        const note = notes.find((n) => n.id === id);
+        const contentDiv = document.getElementById(`content-${id}`);
+        const originalText = note.text;
+
+        contentDiv.contentEditable = true;
+        contentDiv.classList.add("editing");
+        contentDiv.focus();
+
+        // تحديد النص كله
+        const range = document.createRange();
+        range.selectNodeContents(contentDiv);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        // تغيير الأزرار
+        const noteItem = document.getElementById(`note-${id}`);
+        const actionsDiv = noteItem.querySelector(".note-actions");
+        actionsDiv.innerHTML = `
+                <button class="note-btn save-btn" onclick="saveEdit(${id})" title="حفظ">✅</button>
+                <button class="note-btn delete-btn" onclick="cancelEdit(${id}, '${originalText.replace(
+          /'/g,
+          "\\'"
+        )}');" title="إلغاء">❌</button>
+            `;
+      }
+
+      // حفظ التعديل
+      function saveEdit(id) {
+        const contentDiv = document.getElementById(`content-${id}`);
+        const newText = contentDiv.innerText.trim();
+
+        if (newText === "") {
+          alert("الملاحظة لا يمكن أن تكون فارغة!");
+          return;
+        }
+
+        const note = notes.find((n) => n.id === id);
+        note.text = newText;
+        note.date = new Date().toLocaleString("ar-EG");
+
+        saveNotes();
+        renderNotes();
+      }
+
+      // إلغاء التعديل
+      function cancelEdit(id, originalText) {
+        renderNotes();
+      }
+
+      // حذف ملاحظة
+      function deleteNote(id) {
+        if (confirm("هل أنت متأكد من حذف هذه الملاحظة؟")) {
+          notes = notes.filter((n) => n.id !== id);
+          saveNotes();
+          renderNotes();
+        }
+      }
+
+      // دالة لمزامنة البيانات مع السيرفر (اختيارية)
+      /*
+        async function syncToServer(notes) {
+            try {
+                const response = await fetch('YOUR_SERVER_URL/api/notes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(notes)
+                });
+                
+                if (response.ok) {
+                    console.log('تم المزامنة مع السيرفر بنجاح');
+                    document.querySelector('.sync-status').className = 'sync-status sync-success';
+                    document.querySelector('.sync-status').textContent = '☁️ متزامن';
+                }
+            } catch (error) {
+                console.error('خطأ في المزامنة:', error);
+            }
+        }
+        */
+
+      // تحميل الملاحظات عند بدء التطبيق
+      loadNotes();
+    </script>
+  </body>
+</html>
